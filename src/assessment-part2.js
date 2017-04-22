@@ -23,7 +23,7 @@
         },
         { //...
       ]
-    }
+    } 
 */
 
 // In the first .then function you use, assign the first user object (located in the response object)
@@ -37,14 +37,20 @@ var thirdUser = 'don\'t touch this string, either!';
 
 function noWeakLink() {
 
-  var promise = $http({
-    method: 'GET',
-    url: '/api/users'
-  })
-  // CODE HERE...
+    var promise = $http({
+        method: 'GET',
+        url: '/api/users'
+    }).then(function (response) {
+
+        firstUser = response.data[0];
+
+        thirdUser = response.data[2];
+
+        return response.data[9];
+    })
 
 
-  return promise;
+    return promise;
 }
 
 
@@ -66,14 +72,15 @@ function noWeakLink() {
 // 'My name is Horton and I am very heavy!' (The above instructions should make this work.  No code needed for this paragraph)
 
 var elephant = {
-  name: 'Horton'
+    name: 'Horton'
 }
+
 function large() {
 
-  return 'My name is ' + this.name + ' and I am very heavy!'
+    return 'My name is ' + this.name + ' and I am very heavy!'
 }
 // CODE HERE...
-
+var boundToElephant = large.bind(elephant);
 
 
 // *************
@@ -86,6 +93,10 @@ function large() {
 // Use explicit binding to give capacity the context of crew and return the result.
 
 // CODE HERE...
+function deathStar(capacity, crew) {
+    var crewCapacity = capacity.bind(crew);
+    return crewCapacity;
+}
 
 
 
@@ -101,7 +112,11 @@ function large() {
 // The closure function will returns the combined value of assets and liabilities.
 
 // CODE HERE...
-
+function accountingOffice(assets) {
+    return function (liabilities) {
+        return assets + liabilities;
+    }
+}
 
 
 // *************
@@ -126,7 +141,16 @@ function large() {
 // };
 
 // CODE HERE...
-
+function forgetter(name) {
+    var obj = {
+        name: name,
+        remember: []
+    };
+    return function rememberall(item) {
+        obj.remember.push(item);
+        return obj;
+    }
+}
 
 
 // *************
@@ -154,3 +178,37 @@ function large() {
 // NOTE: Neither hunger nor danger should be able to exceed 100 or drop below 0.
 
 // CODE HERE...
+function frodo(startingHungerValue, startingDangerValue) {
+    var hunger = startingHungerValue;
+    var danger = startingDangerValue;
+    return {
+        dinnerOverFire: function () {
+            hunger -= 25;
+            danger += 40;
+            if (hunger < 1) {
+                hunger = 0;
+            }
+            if (danger > 99) {
+                danger = 100;
+            }
+            return {
+                hunger: hunger,
+                danger: danger
+            }
+        },
+        hidingInBush: function () {
+            hunger += 35;
+            danger -= 20;
+            if (hunger > 99) {
+                hunger = 100;
+            }
+            if (danger < 1) {
+                danger = 0;
+            }
+            return {
+                hunger: hunger,
+                danger: danger
+            }
+        }
+    }
+}
